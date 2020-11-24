@@ -50,9 +50,20 @@ func isExist(path string) bool {
 
 func LogError(err error) {
 	createLogFileIfNotExist()
-	msg := err.Error()
+	msg := "Message:" + err.Error()
 	msg += "\n"
-	msg += string(debug.Stack())
+	msg += "Stack:" + string(debug.Stack())
+	fmt.Println(msg)
+	_errorLogger.Println(msg)
+}
+
+func LogErrorWithRemark(err error, remark string) {
+	createLogFileIfNotExist()
+	msg := "Message:" + err.Error()
+	msg += "\n"
+	msg += "Remark:" + remark
+	msg += "\n"
+	msg += "Stack:" + string(debug.Stack())
 	fmt.Println(msg)
 	_errorLogger.Println(msg)
 }
