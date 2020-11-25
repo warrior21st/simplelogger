@@ -34,9 +34,9 @@ func createLogFileIfNotExist() {
 			log.Fatalln("open log file failure:", err)
 		}
 
-		_infoLogger = log.New(logFile, "[Info]", log.Ldate|log.Ltime)
-		_warningLogger = log.New(logFile, "[Warning]", log.Ldate|log.Ltime)
-		_errorLogger = log.New(logFile, "[Error]", log.Ldate|log.Ltime|log.Llongfile)
+		_infoLogger = log.New(logFile, "[info]", log.Ldate|log.Ltime)
+		_warningLogger = log.New(logFile, "[warning]", log.Ldate|log.Ltime)
+		_errorLogger = log.New(logFile, "[error]", log.Ldate|log.Ltime|log.Llongfile)
 
 		_lastLogFileDate = nowStr
 
@@ -53,22 +53,19 @@ func LogError(err error) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
 	fmt.Printf("[error]%+v", err1)
-	_errorLogger.Printf("\nMessage:%+v", err1)
+	_errorLogger.Printf("%+v", err1)
 }
 
 func LogErrorWithRemark(err error, remark string) {
 	createLogFileIfNotExist()
-	msg := "\nRemark:" + remark
-	msg += "\n"
-	msg += "Message:"
 	err1 := errors.WithStack(err)
-	fmt.Printf("[error]Remark:"+remark+",Message:%+v", err1)
-	_errorLogger.Printf(msg+"%+v", err1)
+	fmt.Printf("[error]%+v\n[error remakr]"+remark, err1)
+	_errorLogger.Printf("%+v"+"\n[Error remark]"+remark, err1)
 }
 
 func LogWarning(msg string) {
 	createLogFileIfNotExist()
-	fmt.Println("[warn]" + msg)
+	fmt.Println("[warning]" + msg)
 	_warningLogger.Println(msg)
 }
 
