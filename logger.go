@@ -53,14 +53,14 @@ func LogError(err error) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
 	fmt.Printf("[error]%+v", err1)
-	_errorLogger.Printf("%+v", err1)
+	_errorLogger.Printf("%+v\n--------------------------------------------------error end--------------------------------------------------", err1)
 }
 
 func LogErrorWithRemark(err error, remark string) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
 	fmt.Printf("[error]%+v\n[error remakr]"+remark, err1)
-	_errorLogger.Printf("%+v"+"\n[error remark]"+remark, err1)
+	_errorLogger.Printf("%+v"+"\n[error remark]"+remark+"\n--------------------------------------------------error end--------------------------------------------------", err1)
 }
 
 func LogWarning(msg string) {
