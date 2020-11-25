@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"runtime/debug"
 	"sync"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 var (
@@ -50,22 +51,19 @@ func isExist(path string) bool {
 
 func LogError(err error) {
 	createLogFileIfNotExist()
-	msg := "Message:" + err.Error()
-	msg += "\n"
-	msg += "Stack:" + string(debug.Stack())
-	fmt.Println(msg)
-	_errorLogger.Println(msg)
+	err1 := errors.WithStack(err)
+	fmt.Printf("Message:%+v", err1)
+	_errorLogger.Printf("Message:%+v", err1)
 }
 
 func LogErrorWithRemark(err error, remark string) {
 	createLogFileIfNotExist()
-	msg := "Message:" + err.Error()
+	msg := "Remark:" + remark
 	msg += "\n"
-	msg += "Remark:" + remark
-	msg += "\n"
-	msg += "Stack:" + string(debug.Stack())
-	fmt.Println(msg)
-	_errorLogger.Println(msg)
+	msg += "Message:"
+	err1 := errors.WithStack(err)
+	fmt.Printf(msg+"%+v", err1)
+	_errorLogger.Printf(msg+"%+v", err1)
 }
 
 func LogWarning(msg string) {
