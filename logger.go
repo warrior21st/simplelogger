@@ -60,7 +60,7 @@ func LogErrorWithRemark(err error, remark string) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
 	fmt.Printf("[error]%+v\n[error remakr]"+remark, err1)
-	_errorLogger.Printf("%+v"+"\n[Error remark]"+remark, err1)
+	_errorLogger.Printf("%+v"+"\n[error remark]"+remark, err1)
 }
 
 func LogWarning(msg string) {
