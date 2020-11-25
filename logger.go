@@ -52,28 +52,28 @@ func isExist(path string) bool {
 func LogError(err error) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
-	fmt.Printf("Message:%+v", err1)
-	_errorLogger.Printf("Message:%+v", err1)
+	fmt.Printf("[error]%+v", err1)
+	_errorLogger.Printf("\nMessage:%+v", err1)
 }
 
 func LogErrorWithRemark(err error, remark string) {
 	createLogFileIfNotExist()
-	msg := "Remark:" + remark
+	msg := "\nRemark:" + remark
 	msg += "\n"
 	msg += "Message:"
 	err1 := errors.WithStack(err)
-	fmt.Printf(msg+"%+v", err1)
+	fmt.Printf("[error]Remark:"+remark+",Message:%+v", err1)
 	_errorLogger.Printf(msg+"%+v", err1)
 }
 
 func LogWarning(msg string) {
 	createLogFileIfNotExist()
-	fmt.Println(msg)
+	fmt.Println("[warn]" + msg)
 	_warningLogger.Println(msg)
 }
 
 func LogInfo(msg string) {
 	createLogFileIfNotExist()
-	fmt.Println(msg)
+	fmt.Println("[info]" + msg)
 	_infoLogger.Println(msg)
 }
