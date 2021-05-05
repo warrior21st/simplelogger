@@ -1,4 +1,4 @@
-package logger
+package simplelogger
 
 import (
 	"fmt"
