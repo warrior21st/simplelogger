@@ -11,9 +11,10 @@ import (
 )
 
 var (
-	_infoLogger       *log.Logger
-	_warningLogger    *log.Logger
-	_errorLogger      *log.Logger
+	// _infoLogger       *log.Logger
+	// _warningLogger    *log.Logger
+	// _errorLogger      *log.Logger
+	_logWriter        *log.Logger
 	_lastLogFileDate  string
 	_fileCreateLocker sync.Mutex
 )
@@ -29,14 +30,16 @@ func createLogFileIfNotExist() {
 			os.Mkdir(logFilePath, os.ModePerm)
 		}
 		logFilePath += string(os.PathSeparator) + nowStr + ".log"
-		logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+		logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
 			log.Fatalln("open log file failure:", err)
 		}
+		defer logFile.Close()
 
-		_infoLogger = log.New(logFile, "[info]", log.Ldate|log.Ltime)
-		_warningLogger = log.New(logFile, "[warning]", log.Ldate|log.Ltime)
-		_errorLogger = log.New(logFile, "[error]", log.Ldate|log.Ltime|log.Llongfile)
+		_logWriter = log.New(logFile, "", log.Ldate|log.Ltime)
+		// _infoLogger = log.New(logFile, "[info]", log.Ldate|log.Ltime)
+		// _warningLogger = log.New(logFile, "[warning]", log.Ldate|log.Ltime)
+		// _errorLogger = log.New(logFile, "[error]", log.Ldate|log.Ltime|log.Llongfile)
 
 		_lastLogFileDate = nowStr
 
@@ -53,24 +56,24 @@ func LogError(err error) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
 	fmt.Printf("[error]%+v", err1)
-	_errorLogger.Printf("%+v\n--------------------------------------------------error end--------------------------------------------------", err1)
+	_logWriter.Printf("[error]%+v\n--------------------------------------------------error end--------------------------------------------------", err1)
 }
 
 func LogErrorWithRemark(err error, remark string) {
 	createLogFileIfNotExist()
 	err1 := errors.WithStack(err)
 	fmt.Printf("[error]%+v\n[error remakr]"+remark, err1)
-	_errorLogger.Printf("%+v"+"\n[error remark]"+remark+"\n--------------------------------------------------error end--------------------------------------------------", err1)
+	_logWriter.Printf("[error]%+v"+"\n[error remark]"+remark+"\n--------------------------------------------------error end--------------------------------------------------", err1)
 }
 
 func LogWarning(msg string) {
 	createLogFileIfNotExist()
 	fmt.Println("[warning]" + msg)
-	_warningLogger.Println(msg)
+	_logWriter.Println("[warning]" + msg)
 }
 
 func LogInfo(msg string) {
 	createLogFileIfNotExist()
 	fmt.Println("[info]" + msg)
-	_infoLogger.Println(msg)
+	_logWriter.Println("[info]" + msg)
 }
