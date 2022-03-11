@@ -77,3 +77,7 @@ func LogInfo(msg string) {
 	fmt.Println("[info]" + msg)
 	_logWriter.Println("[info]" + msg)
 }
+
+func LogToConsoleWithTime(msg string, paras ...interface{}) {
+	fmt.Printf("%s %s\n", time.Now().UTC().Add(8*time.Hour).Format("2006-01-02 15:04:05"), fmt.Sprintf(msg, paras...))
+}
